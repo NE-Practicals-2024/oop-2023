@@ -16,9 +16,9 @@ public class Cart {
     private UUID id;
 
     @OneToOne
-    private Customer customer;
+    private User user;
 
     @OneToMany(mappedBy = "cart", orphanRemoval = true)
-    private List<Purchased> items;
+    private List<CartItem> items;
 
 }

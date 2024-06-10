@@ -2,11 +2,11 @@ package com.mugishap.rca.springboot.v1.controllers;
 
 import com.mugishap.rca.springboot.v1.enums.ERole;
 import com.mugishap.rca.springboot.v1.exceptions.BadRequestException;
-import com.mugishap.rca.springboot.v1.models.Role;
-import com.mugishap.rca.springboot.v1.models.User;
+import com.mugishap.rca.springboot.v1.models.*;
 import com.mugishap.rca.springboot.v1.payload.request.CreateUserDTO;
 import com.mugishap.rca.springboot.v1.payload.response.ApiResponse;
 import com.mugishap.rca.springboot.v1.repositories.IRoleRepository;
+import com.mugishap.rca.springboot.v1.services.ICartService;
 import com.mugishap.rca.springboot.v1.services.IUserService;
 import com.mugishap.rca.springboot.v1.utils.Constants;
 import jakarta.validation.Valid;
@@ -18,8 +18,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -31,7 +34,7 @@ public class UserController {
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final IRoleRepository roleRepository;
-
+    private final ICartService cartService;
     @GetMapping(path = "/current-user")
     public ResponseEntity<ApiResponse> currentlyLoggedInUser() {
         return ResponseEntity.ok(ApiResponse.success("Currently logged in user fetched", userService.getLoggedInUser()));
@@ -63,23 +66,16 @@ public class UserController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<ApiResponse> register(@RequestBody @Valid CreateUserDTO dto) {
-
-        User user = new User();
-
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         Role role = roleRepository.findByName(dto.getRole()).orElseThrow(
                 () -> new BadRequestException("User Role not set"));
-
-        user.setEmail(dto.getEmail());
-        user.setNames(dto.getNames());
-        user.setTelephone(dto.getTelephone());
-        user.setPassword(encodedPassword);
-        user.setRoles(Collections.singleton(role));
-
-        User entity = this.userService.create(user);
-
-        return ResponseEntity.ok(ApiResponse.success("User created successfully", entity));
+        Set<Role> roles = (Collections.singleton(role));
+        Cart cart = new Cart();
+        User user = new User(dto.getNames(), dto.getTelephone(), dto.getEmail(), encodedPassword, roles, cart);
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().toString());
+        return ResponseEntity.created(uri).body(ApiResponse.success("User created successfully", this.userService.create(user)));
     }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<ApiResponse> deleteMyAccount() {

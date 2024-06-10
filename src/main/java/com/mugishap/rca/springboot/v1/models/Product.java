@@ -30,7 +30,7 @@ public class Product extends InitiatorAudit {
     private String productType;
 
     @Column(name = "price")
-    private int price;
+    private double price;
 
     private LocalDateTime inDate;
 
@@ -40,4 +40,11 @@ public class Product extends InitiatorAudit {
     @OneToOne
     private Quantity quantity;
 
+    public Product(String productName, String productType, double price, Quantity quantity, File file) {
+        this.productName = productName;
+        this.productType = productType;
+        this.price = price;
+        this.quantity = quantity;
+        this.image = file;
+    }
 }

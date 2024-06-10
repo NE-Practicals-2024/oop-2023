@@ -3,7 +3,10 @@ package com.mugishap.rca.springboot.v1.serviceImpls;
 import com.mugishap.rca.springboot.v1.enums.ERole;
 import com.mugishap.rca.springboot.v1.exceptions.BadRequestException;
 import com.mugishap.rca.springboot.v1.exceptions.ResourceNotFoundException;
+import com.mugishap.rca.springboot.v1.models.Cart;
 import com.mugishap.rca.springboot.v1.models.User;
+import com.mugishap.rca.springboot.v1.repositories.IRoleRepository;
+import com.mugishap.rca.springboot.v1.services.ICartService;
 import com.mugishap.rca.springboot.v1.services.IFileService;
 import com.mugishap.rca.springboot.v1.services.IUserService;
 import com.mugishap.rca.springboot.v1.standalone.FileStorageService;
@@ -25,8 +28,6 @@ import java.util.UUID;
 public class UserServiceImpl implements IUserService {
 
     private final IUserRepository userRepository;
-    private final IFileService fileService;
-    private final FileStorageService fileStorageService;
 
     @Override
     public Page<User> getAll(Pageable pageable) {
@@ -45,7 +46,8 @@ public class UserServiceImpl implements IUserService {
             Optional<User> userOptional = this.userRepository.findByEmail(user.getEmail());
             if (userOptional.isPresent())
                 throw new BadRequestException(String.format("User with email '%s' already exists", user.getEmail()));
-            return this.userRepository.save(user);
+            this.userRepository.save(user);
+            return user;
         } catch (DataIntegrityViolationException ex) {
             String errorMessage = Utility.getConstraintViolationMessage(ex, user);
             throw new BadRequestException(errorMessage, ex);

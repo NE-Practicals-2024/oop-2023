@@ -1,4 +1,11 @@
 package com.mugishap.rca.springboot.v1.repositories;
 
-public interface IPurchasedRepository {
+import com.mugishap.rca.springboot.v1.models.Purchased;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
+
+@Repository
+public interface IPurchasedRepository extends JpaRepository<Purchased, UUID> {
 }

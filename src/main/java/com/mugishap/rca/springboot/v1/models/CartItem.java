@@ -1,14 +1,12 @@
 package com.mugishap.rca.springboot.v1.models;
 
-
-import com.mugishap.rca.springboot.v1.audits.InitiatorAudit;
+import com.mugishap.rca.springboot.v1.audits.TimestampAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,19 +14,23 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "purchased-products")
-public class Purchased extends InitiatorAudit {
+@Table(name = "cart_items")
+public class CartItem extends TimestampAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
-    private User user;
+    @ManyToOne()
+    private Cart cart;
 
-    @OneToMany
-    private List<CartItem> purchasedProducts;
+    @OneToOne()
+    @JoinColumn(name = "product_code")
+    private Product product;
 
-    private double total;
+    private int quantity;
+
+    @Column(name = "total_for_product")
+    private double totalForProduct;
 
 }
