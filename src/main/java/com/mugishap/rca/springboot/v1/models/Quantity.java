@@ -1,6 +1,7 @@
 package com.mugishap.rca.springboot.v1.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,7 @@ public class Quantity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "quantity")
     private Product product;
 
@@ -25,8 +27,8 @@ public class Quantity {
     private String operation;
 
     @CreationTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @Column(name="date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(name = "date")
     private LocalDateTime date;
 
 }

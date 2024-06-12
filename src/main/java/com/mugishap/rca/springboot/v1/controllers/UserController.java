@@ -35,6 +35,7 @@ public class UserController {
 
     private final IRoleRepository roleRepository;
     private final ICartService cartService;
+
     @GetMapping(path = "/current-user")
     public ResponseEntity<ApiResponse> currentlyLoggedInUser() {
         return ResponseEntity.ok(ApiResponse.success("Currently logged in user fetched", userService.getLoggedInUser()));
@@ -71,6 +72,7 @@ public class UserController {
                 () -> new BadRequestException("User Role not set"));
         Set<Role> roles = (Collections.singleton(role));
         Cart cart = new Cart();
+        this.cartService.save(cart);
         User user = new User(dto.getNames(), dto.getTelephone(), dto.getEmail(), encodedPassword, roles, cart);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().toString());
         return ResponseEntity.created(uri).body(ApiResponse.success("User created successfully", this.userService.create(user)));

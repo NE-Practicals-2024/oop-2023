@@ -1,8 +1,10 @@
 package com.mugishap.rca.springboot.v1.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,9 +18,10 @@ public class Cart {
     private UUID id;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "cart", orphanRemoval = true)
-    private List<CartItem> items;
+    private List<CartItem> items = new ArrayList<>();
 
 }

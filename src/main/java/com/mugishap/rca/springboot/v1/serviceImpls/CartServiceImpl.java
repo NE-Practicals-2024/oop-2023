@@ -26,8 +26,8 @@ public class CartServiceImpl implements ICartService {
     private final IPurchasedRepository purchasedRepository;
 
     @Override
-    public Cart save(Cart cart) {
-        return this.cartRepository.save(cart);
+    public void save(Cart cart) {
+        this.cartRepository.save(cart);
     }
 
     @Override
@@ -42,12 +42,14 @@ public class CartServiceImpl implements ICartService {
         if (existingCartItem.isPresent()) {
             CartItem cartItem = existingCartItem.get();
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            this.cartItemRepository.save(cartItem);
         } else {
             CartItem newCartItem = new CartItem();
             newCartItem.setCart(cart);
             newCartItem.setProduct(product);
             newCartItem.setQuantity(quantity);
             newCartItem.setTotalForProduct(quantity * product.getPrice());
+            this.cartItemRepository.save(newCartItem);
             cart.getItems().add(newCartItem);
         }
         return cart;
@@ -62,7 +64,7 @@ public class CartServiceImpl implements ICartService {
     }
 
     @Override
-    public Cart purchaseItems() {
+    public Purchased purchaseItems() {
         User user = this.userService.getLoggedInUser();
         Cart cart = this.cartRepository.findByUser_Id(user.getId()).orElseThrow(() -> new BadRequestException("Cart not found"));
         if (cart.getItems().isEmpty()) {
@@ -76,6 +78,6 @@ public class CartServiceImpl implements ICartService {
         purchased.setTotal(total);
         this.purchasedRepository.save(purchased);
         this.cartItemRepository.deleteAll(cart.getItems());
-        return cart;
+        return purchased;
     }
 }

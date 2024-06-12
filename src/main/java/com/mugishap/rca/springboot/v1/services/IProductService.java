@@ -1,6 +1,5 @@
 package com.mugishap.rca.springboot.v1.services;
 
-import com.mugishap.rca.springboot.v1.models.File;
 import com.mugishap.rca.springboot.v1.models.Product;
 import com.mugishap.rca.springboot.v1.payload.request.CreateProductDTO;
 import org.springframework.data.domain.Page;
@@ -13,7 +12,7 @@ import java.util.UUID;
 public interface IProductService {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    Product createProduct(CreateProductDTO dto, File file);
+    Product createProduct(CreateProductDTO dto);
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     void deleteProduct(UUID id);

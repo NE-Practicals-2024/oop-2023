@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class Purchased extends InitiatorAudit {
     private User user;
 
     @OneToMany
-    private List<CartItem> purchasedProducts;
+    private List<CartItem> purchasedProducts=new ArrayList<>();
 
     private double total;
 

@@ -25,4 +25,14 @@ public class CartController {
         return ResponseEntity.ok(ApiResponse.success("Item added successfully", cart));
     }
 
+    @GetMapping("/empty-cart")
+    private ResponseEntity<ApiResponse> emptyCart() {
+        return ResponseEntity.ok(ApiResponse.success("Cart emptied successfully", this.cartService.emptyCart()));
+    }
+
+    @PostMapping("/checkout")
+    private ResponseEntity<ApiResponse> checkout() {
+        return ResponseEntity.ok(ApiResponse.success("Checkout successful", this.cartService.purchaseItems()));
+    }
+
 }

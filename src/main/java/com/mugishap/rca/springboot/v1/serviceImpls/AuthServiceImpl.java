@@ -21,7 +21,6 @@ public class AuthServiceImpl implements IAuthService {
     private final IUserService userService;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public JwtAuthenticationResponse login(String email, String password) {

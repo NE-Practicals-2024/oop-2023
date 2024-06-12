@@ -19,7 +19,6 @@ import java.util.UUID;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@OnDelete(action = OnDeleteAction.CASCADE)
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"}), @UniqueConstraint(columnNames = {"telephone"})})
 public class User extends TimestampAudit {
     @Id

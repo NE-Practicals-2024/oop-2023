@@ -38,7 +38,6 @@ public class BinarySupermarketApplication {
                 Role newRole = new Role(role, role.toString());
                 roleRepository.save(newRole);
                 System.out.println("Created: " + role);
-
             }
         }
         return true;

@@ -34,17 +34,16 @@ public class Product extends InitiatorAudit {
 
     private LocalDateTime inDate;
 
-    @OneToOne
-    private File image;
+    private String image;
 
     @OneToOne
     private Quantity quantity;
 
-    public Product(String productName, String productType, double price, Quantity quantity, File file) {
+    public Product(String productName, String productType, double price, Quantity quantity, String image) {
         this.productName = productName;
         this.productType = productType;
         this.price = price;
         this.quantity = quantity;
-        this.image = file;
+        this.image = image;
     }
 }

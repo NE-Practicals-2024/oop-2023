@@ -3,13 +3,8 @@ package com.mugishap.rca.springboot.v1.serviceImpls;
 import com.mugishap.rca.springboot.v1.enums.ERole;
 import com.mugishap.rca.springboot.v1.exceptions.BadRequestException;
 import com.mugishap.rca.springboot.v1.exceptions.ResourceNotFoundException;
-import com.mugishap.rca.springboot.v1.models.Cart;
 import com.mugishap.rca.springboot.v1.models.User;
-import com.mugishap.rca.springboot.v1.repositories.IRoleRepository;
-import com.mugishap.rca.springboot.v1.services.ICartService;
-import com.mugishap.rca.springboot.v1.services.IFileService;
 import com.mugishap.rca.springboot.v1.services.IUserService;
-import com.mugishap.rca.springboot.v1.standalone.FileStorageService;
 import com.mugishap.rca.springboot.v1.utils.Utility;
 import com.mugishap.rca.springboot.v1.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +50,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public void delete(UUID id) {
         this.userRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User", "id", id));
 
         this.userRepository.deleteById(id);
-        return true;
     }
 
     @Override

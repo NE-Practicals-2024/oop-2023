@@ -15,7 +15,7 @@ public interface IUserService {
     User getById(UUID id);
 
     User create(User user);
-    boolean delete(UUID id);
+    void delete(UUID id);
 
     Page<User> getAllByRole(Pageable pageable, ERole role);
 
